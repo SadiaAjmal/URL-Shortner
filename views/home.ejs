@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+
+<body>
+    <h1>URL Shortner</h1>
+
+    <% if(locals.id) { %>
+        <p>URL Generated: http://localhost:8001/url
+            <%= id.replace(/\s+/g, '') %>
+        </p>
+
+        <% } %>
+            <div>
+
+                <form method="post" action="/url">
+                    <label>Enter your origional URL : </label>
+                    <input type="text" name="url" placeholder="https://example.com">
+                    <button type="submit">Generate</button>
+                </form>
+            </div>
+
+            <br><br>
+            <div>
+                <% if (locals.urls) {%>
+                    <table>
+                        <% if(urls.length !== 0) { %>
+                            <thead>
+
+                                <th>Sr. NO.</th>
+                                <th>Short ID</th>
+                                <th>Redirect</th>
+                                <th>Clicks</th>
+                                <th>Short URL</th>
+                                <th>Copy Short URL</th>
+
+                            </thead>
+
+                            <% } %>
+
+                                <tbody>
+                                    <% urls.forEach((url , index) => { %>
+                                        <tr>
+
+                                            <td>
+                                                <%= index+1 %>
+                                            </td>
+                                            <td>
+                                                <%= url.shortId %>
+                                            </td>
+                                            <td>
+                                                <%= url.redirectURL %>
+                                                    <td>
+                                                        <%= url.visitHistory.length %>
+                                                    </td>
+                                            </td>
+                                            <td>
+                                                http://localhost:8001/url/
+                                                <%=url.shortId%>
+
+                                            </td>
+
+                                            <td>
+                                                <button onclick="copyToClipboard('http://localhost:8001/url/<%= url.shortId %>')">
+                                                    Copy URL
+                                                    </button>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+
+                                </tbody>
+                    </table>
+                    <%}%>
+
+            </div>
+
+
+            <script>
+                // Function to copy the URL to the clipboard
+                function copyToClipboard(text) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        alert('Copied to clipboard: ' + text);
+                    }).catch(err => {
+                        alert('Failed to copy: ' + err);
+                    });
+                }
+            </script>
+
+</body>
+
+</html>
+
+</html>
